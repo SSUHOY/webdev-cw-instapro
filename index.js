@@ -1,4 +1,4 @@
-import { getPosts } from "./api.js";
+import { getPosts, getUserPosts } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -15,6 +15,8 @@ import {
   removeUserFromLocalStorage,
   saveUserToLocalStorage,
 } from "./helpers.js";
+import { renderUserPostsPageComponent } from "./components/user-posts-page-component.js";
+
 
 export let user = getUserFromLocalStorage();
 export let page = null;
@@ -50,10 +52,12 @@ export const goToPage = (newPage, data) => {
       return renderApp();
     }
 
+    // Показываем загрузочный элемент при загрузке постов 
+
     if (newPage === POSTS_PAGE) {
       page = LOADING_PAGE;
       renderApp();
-
+      // Рендер приложения с полученными постами
       return getPosts({ token: getToken() })
         .then((newPosts) => {
           page = POSTS_PAGE;
@@ -62,25 +66,31 @@ export const goToPage = (newPage, data) => {
         })
         .catch((error) => {
           console.error(error);
-          // goToPage(POSTS_PAGE);
+          goToPage(POSTS_PAGE);
         });
     }
+    // Получение постов конкретного user'а
 
     if (newPage === USER_POSTS_PAGE) {
       // TODO: реализовать получение постов юзера из API
-      console.log("Открываю страницу пользователя: ", data.userId);
-      page = USER_POSTS_PAGE;
-      posts = [];
-      return renderApp();
+      page = LOADING_PAGE;
+      renderApp();
+      return getUserPosts({ token: getToken(), id: data.userId }).then((newPosts) => {
+        page = USER_POSTS_PAGE;
+        posts = newPosts;
+        console.log(posts);
+        renderApp();
+      }).catch((error) => {
+        console.log(error);
+        goToPage(USER_POSTS_PAGE);
+      });
     }
 
     page = newPage;
     renderApp();
 
-    return;
+    return renderUserPostsPageComponent({ appEl });
   }
-
-  throw new Error("страницы не существует");
 };
 
 const renderApp = () => {
