@@ -17,6 +17,7 @@ import {
 } from "./helpers.js";
 import { renderUserPostsPageComponent } from "./components/user-posts-page-component.js";
 
+const appEl = document.getElementById("app");
 
 export let user = getUserFromLocalStorage();
 export let page = null;
@@ -94,7 +95,6 @@ export const goToPage = (newPage, data) => {
 };
 
 const renderApp = () => {
-  const appEl = document.getElementById("app");
   if (page === LOADING_PAGE) {
     return renderLoadingPageComponent({
       appEl,
