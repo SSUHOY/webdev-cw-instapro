@@ -1,7 +1,11 @@
 import { renderHeaderComponent } from "./header-component.js";
+import { renderHeaderComponent } from "./header-component.js";
+import { renderUploadImageComponent } from "./upload-image-component.js";
+import { getToken } from "../index.js";
 
 export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
   const render = () => {
+    let imageUrl = '';
     // TODO: Реализовать страницу добавления поста
     const appHtml = `
     <div class="page-container">
@@ -26,6 +30,7 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
             Опишите фотографию:
             <textarea class="input textarea" rows="4"></textarea>
             </label>
+            <div class='form-error'></div>
         </div>    
         <button class="button" id="add-button">Добавить</button>
       </div>
