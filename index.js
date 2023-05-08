@@ -1,4 +1,4 @@
-import { getPosts, getUserPosts } from "./api.js";
+import { addPost, getPosts, getUserPosts } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -90,8 +90,10 @@ export const goToPage = (newPage, data) => {
     page = newPage;
     renderApp();
 
-    return renderUserPostsPageComponent({ appEl });
+    return;
   }
+
+  throw new Error('Такой страницы не существует')
 };
 
 const renderApp = () => {
@@ -121,6 +123,7 @@ const renderApp = () => {
       appEl,
       onAddPostClick({ description, imageUrl }) {
         // TODO: реализовать добавление поста в API
+        addPost({token: getToken(), description, imageUrl})
         console.log("Добавляю пост...", { description, imageUrl });
         goToPage(POSTS_PAGE);
       },
@@ -135,7 +138,7 @@ const renderApp = () => {
   }
 
   if (page === USER_POSTS_PAGE) {
-    // TODO: реализовать страницу фотографию пользвателя
+    // TODO: реализовать страницу фотографий пользвателя
     appEl.innerHTML = "Здесь будет страница фотографий пользователя";
     return;
   }

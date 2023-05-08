@@ -7,6 +7,30 @@ const baseHost = "https://webdev-hw-api.vercel.app";
 const postsHost = `${baseHost}/api/v1/${personalKey}/instapro`;
 // GET списка комментов URL с моим ключом: https://webdev-hw-api.vercel.app/api/v1/sam-sukhoi/instapro
 
+// Добавляет пост из API  
+export function addPost({ description, imageUrl, token }) {
+  return fetch(postsHost, {
+    method: "POST",
+    headers: {
+      Authorization: token,
+    },
+    body: JSON.stringify({
+      description,
+      imageUrl,
+    }),
+  }
+  ).then((response) => {
+    if (response.status === 400) {
+      throw new Error('Отутствует фото или описание');
+    }
+    if (response.status === 401) {
+      throw new Error('Нет авторизации');
+    }
+    return response.json();
+  });
+}
+
+
 // GET списка из кода Анны
 // export function getPosts({ token }) {
 //   return fetch(postsHost, {
@@ -89,7 +113,7 @@ export function loginUser({ login, password }) {
 
 // получаем посты конкретного пользователя
 export function getUserPosts({ token, id }) {
-  return fetch(postsHost +"/user-posts/" + id, {
+  return fetch(postsHost + "/user-posts/" + id, {
     method: "GET",
     headers: {
       Authorization: token,
@@ -106,29 +130,6 @@ export function getUserPosts({ token, id }) {
       return data.posts;
     });
 }
-// Добавляет пост из API  
-export function addPost({}) {
-  return fetch(postsHost, {
-    method: "POST",
-    headers: {
-      Authorization: token,
-    },
-    body: JSON.stringify({
-      description,
-      imageUrl,
-    }),
-  }
-  ).then((response) => {
-    if (response.status === 400) {
-
-    }
-    if(response.status === 401) {
-      throw new Error('Нет авторизации');
-    }
-    return response.json();
-  });
-}
-
 
 // Загружает картинку в облако, возвращает url загруженной картинки
 export function uploadImage({ file }) {

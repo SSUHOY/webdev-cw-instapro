@@ -1,9 +1,9 @@
 import { renderHeaderComponent } from "./header-component.js";
-import { renderHeaderComponent } from "./header-component.js";
 import { renderUploadImageComponent } from "./upload-image-component.js";
 import { getToken } from "../index.js";
+import { addPost } from "../api.js";
 
-export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
+export function renderAddPostPageComponent({ appEl, onAddPostClick, getToken }) {
   const render = () => {
     let imageUrl = '';
     // TODO: Реализовать страницу добавления поста
@@ -26,13 +26,15 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
                 <input type="file" class="file-upload-input" style="display:none">
                 Выберите фото
             </label>
-            <label>
+            </div>
+      </div>
+      <label>
             Опишите фотографию:
-            <textarea class="input textarea" rows="4"></textarea>
+            <textarea class="input textarea" rows="4" value='4'></textarea>
             </label>
             <div class='form-error'></div>
+            <button class="button" id="add-button">Добавить</button>
         </div>    
-        <button class="button" id="add-button">Добавить</button>
       </div>
     </div>
   `;
@@ -43,10 +45,39 @@ export function renderAddPostPageComponent({ appEl, onAddPostClick }) {
       element: document.querySelector(".header-container"),
     });
 
+    // Иницилизация ошибки при не выбранных (фото / описания)
+    const setError = (message) => {
+      appEl.querySelector('.form-error').textContent = message;
+    };
+
+    const uploadImageContainer = appEl.querySelector('.upload-image-container');
+
+    if (uploadImageContainer) {
+      renderUploadImageComponent({
+        element: appEl.querySelector('.upload-image-container'),
+        onImageUrlChange(newImageUrl) {
+          imageUrl = newImageUrl
+        },
+      });
+    }
+
     document.getElementById("add-button").addEventListener("click", () => {
+      console.log('Кнопка работает');
+      setError('');
+
+      const description = document.querySelector('.textarea').value;
+      console.log(description);
+      if (!imageUrl) {
+        setError('Не выбрана фотография')
+      }
+      if (description === '') {
+        setError('Добавьте описание к фото');
+        return;
+      }
+
       onAddPostClick({
-        description: "Описание картинки",
-        imageUrl: "https://image.png",
+        description: description,
+        imageUrl: imageUrl,
       });
     });
   };
