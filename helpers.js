@@ -1,5 +1,11 @@
 import { getToken } from "./index.js";
+import ru from 'date-fns/locale/ru';
+import { formatDistanceToNow } from "date-fns";
 
+ // Форматирование даты поста
+export const formatDateDistanceToNow = (date) => {
+  return formatDistanceToNow(date, {locale: ru, addSuffix:true})
+}
 
 export function saveUserToLocalStorage(user) {
   window.localStorage.setItem("user", JSON.stringify(user));

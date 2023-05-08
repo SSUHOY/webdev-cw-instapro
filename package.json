@@ -1,0 +1,24 @@
+{
+  "name": "webdev-cw-instapro",
+  "version": "1.0.0",
+  "description": "CourseWork JS",
+  "main": "index.js",
+  "scripts": {
+  "dev": "webpack --mode development --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "webdev-cw-instapro"
+  },
+  "keywords": [
+    "pet"
+  ],
+  "author": "sam-sukhoi",
+  "license": "ISC",
+  "dependencies": {
+    "date-fns": "^2.30.0"
+  },
+  "devDependencies": {
+    "webpack-cli": "^5.1.0"
+  }
+}
