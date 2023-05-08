@@ -2,9 +2,9 @@ import { getToken } from "./index.js";
 import ru from 'date-fns/locale/ru';
 import { formatDistanceToNow } from "date-fns";
 
- // Форматирование даты поста
+// Форматирование даты поста
 export const formatDateDistanceToNow = (date) => {
-  return formatDistanceToNow(date, {locale: ru, addSuffix:true})
+  return formatDistanceToNow(date, { locale: ru, addSuffix: true })
 }
 
 export function saveUserToLocalStorage(user) {
@@ -31,6 +31,7 @@ export function initLikeButtons(posts, user, addLike, removeLike) {
 
   likeButtonElement.forEach((button, index) => {
     button.addEventListener('click', (event) => {
+      console.log('clicked');
       event.stopPropagation();
       const postId = button.dataset.postId;
       const post = posts.find((post) => post.id === postId)
@@ -41,34 +42,38 @@ export function initLikeButtons(posts, user, addLike, removeLike) {
         if (userIndex === -1) {
           post.likes.push({ name: user.name })
         }
-        else {
-          if (userIndex !== -1) {
-            post.likes.splice(userIndex, 1)
-          }
+        addLike({ token: getToken(), id: postId });
+      } else {
+        if (userIndex !== -1) {
+          post.likes.splice(userIndex, 1)
+        }
+        removeLike({ token: getToken(), id: postId })
+      }
 
-          let likedUserNames = post.likes.map(like => like.name)
-          console.log(likedUserNames);
-          // html с новыми данными
-          const likeCountElement = button.parentNode.querySelector('.post-likes-text');
-          likeCountElement.innerHTML =
-            ` Нравится: <strong>${likedUserNames ? likedUserNames[0] : 0} </strong>
+      // обновить иконку ,  Изменить путь к svg лайка
+
+      const likeImgElement = button.querySelector('img');
+      likeImgElement.src = `./assets/images/${post.isLiked ? 'like-active.svg' : 'like-not-active.svg'}`;
+
+      let likedUserNames = post.likes.map(like => like.name)
+      console.log(likedUserNames);
+
+      // html с новыми данными
+      const likeCountElement = button.parentNode.querySelector('.post-likes-text');
+      likeCountElement.innerHTML =
+        ` Нравится: <strong>${likedUserNames ? likedUserNames[0] : 0} </strong>
       ${likedUserNames.length > 1 ? `и <strong>еще ${likedUserNames.length - 1}</strong>` : ''}`;
 
-          // Изменить путь к svg лайка
-
-          const likeImgElement = button.querySelector('img');
-          likeImgElement.src = `./assets/images/${post.isLiked ? 'like-active.svg' : 'like-not-active.svg'}`;
-
-          if (post.isLiked) {
-            //добавляем лайк
-            addLike({ token: getToken(), id: postId });
-          } else {
-            //удаляем лайк
-            delLike({ token: getToken(), id: postId })
-          }
-        }
+      if (post.isLiked) {
+        //добавляем лайк
+        addLike({ token: getToken(), id: postId });
+      } else {
+        //удаляем лайк
+        removeLike({ token: getToken(), id: postId });
       }
     })
   })
 }
+
+
 
