@@ -108,21 +108,21 @@ export function renderAuthPageComponent({ appEl, setUser }) {
         const name = document.getElementById("name-input").value;
         const password = document.getElementById("password-input").value;
         if (!name) {
-          alert("Введите имя");
+          setError('Введите имя');
           return;
         }
         if (!login) {
-          alert("Введите логин");
+          setError('Введите логин');
           return;
         }
 
         if (!password) {
-          alert("Введите пароль");
+          setError('Введите пароль');
           return;
         }
 
         if (!imageUrl) {
-          alert("Не выбрана фотография");
+          setError("Не выбрана фотография");
           return;
         }
 

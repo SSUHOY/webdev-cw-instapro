@@ -111,6 +111,33 @@ export function loginUser({ login, password }) {
   });
 }
 
+// Добавляет лайк
+export function addLike({token, id}) {
+  return fetch(postsHost + "/" + id + "/like", {
+    method:'POST',
+    headers: {
+      Authorization:token,
+    },
+  })
+  .then((response) => {
+    return response.json();
+  });
+}
+
+// Удаляет лайк 
+export function delLike({token, id}) {
+  return fetch(postsHost + "/" + id + "/dislike", {
+    method:'POST',
+    headers: {
+      Authorization:token,
+    },
+  })
+  .then((response) => {
+    return response.json();
+  });
+}
+
+
 // получаем посты конкретного пользователя
 export function getUserPosts({ token, id }) {
   return fetch(postsHost + "/user-posts/" + id, {

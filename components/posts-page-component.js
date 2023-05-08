@@ -1,6 +1,8 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage } from "../index.js";
+import { posts, goToPage, user } from "../index.js";
+import { addLike, delLike } from "../api.js";
+import { initLikeButtons } from "../helpers.js";
 
 
 
@@ -10,7 +12,6 @@ export function renderPostsPageComponent({ appEl }) {
 
 const postsHtml = posts.map((post) => {
   const likedUserNames = post.likes.map(obj => obj.name)
-  const likeCount = likedUserNames.length
   return `<li class="post">
   <div class="post-header" data-user-id=${post.user.id}>
       <img src="${post.user.imageUrl}" class="post-header__user-image">
@@ -24,8 +25,8 @@ const postsHtml = posts.map((post) => {
       <img src="./assets/images/${post.isLiked ? 'like-active.svg' : 'like-not-active.svg'}">
     </button>
     <p class="post-likes-text">
-      Нравится: <strong>${likeCount ? likedUserNames[0] : 0} </strong>
-      ${likeCount > 1 ? `и <strong>еще ${likeCount - 1}</strong>`: ''}
+      Нравится: <strong>${likedUserNames.length ? likedUserNames[0] : 0} </strong>
+      ${likedUserNames.length > 1 ? `и <strong>еще ${likedUserNames.length - 1}</strong>`: ''}
     </p>
   </div>
   <p class="post-text">
@@ -63,4 +64,5 @@ const postsHtml = posts.map((post) => {
       });
     });
   }
+  initLikeButtons(posts, user, addLike, delLike)
 }

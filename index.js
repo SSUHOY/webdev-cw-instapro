@@ -96,7 +96,7 @@ export const goToPage = (newPage, data) => {
   throw new Error('Такой страницы не существует')
 };
 
-const renderApp = () => {
+export const renderApp = () => {
   if (page === LOADING_PAGE) {
     return renderLoadingPageComponent({
       appEl,
@@ -139,8 +139,8 @@ const renderApp = () => {
 
   if (page === USER_POSTS_PAGE) {
     // TODO: реализовать страницу фотографий пользвателя
-    appEl.innerHTML = "Здесь будет страница фотографий пользователя";
-    return;
+    // appEl.innerHTML = "Здесь будет страница фотографий пользователя";
+    return renderUserPostsPageComponent({appEl});
   }
 };
 
