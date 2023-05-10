@@ -55,14 +55,14 @@ export function initLikeButtons(posts, user, addLike, removeLike) {
       const likeImgElement = button.querySelector('img');
       likeImgElement.src = `./assets/images/${post.isLiked ? 'like-active.svg' : 'like-not-active.svg'}`;
 
-      let likedUserNames = post.likes.map(like => like.name)
+      const likedUserNames = post.likes.map(like => like.name)
       console.log(likedUserNames);
 
       // html с новыми данными
       const likeCountElement = button.parentNode.querySelector('.post-likes-text');
       likeCountElement.innerHTML =
-        ` Нравится: <strong>${likedUserNames ? likedUserNames[0] : 0} </strong>
-      ${likedUserNames.length > 1 ? `и <strong>еще ${likedUserNames.length - 1}</strong>` : ''}`;
+      `Нравится: <strong>${likedUserNames.length ? likedUserNames[0] : 0}</strong>
+      ${likedUserNames.length > 1 ? `и <strong>еще ${likedUserNames.length - 1}</strong>`: ''}`;
 
       if (post.isLiked) {
         //добавляем лайк

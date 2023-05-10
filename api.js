@@ -30,37 +30,6 @@ export function addPost({ description, imageUrl, token }) {
   });
 }
 
-
-// GET списка из кода Анны
-// export function getPosts({ token }) {
-//   return fetch(postsHost, {
-//     method: "GET",
-//     headers: {
-//       Authorization: token,
-//     },
-//   })
-//     .then((response) => {
-//       if (response.status === 401) {
-//         throw new Error("Нет авторизации");
-//       }
-
-//       return response.json();
-//     }).then((responseData) => {
-//       const formatPosts = responseData.posts.map((post) => {
-//         return {
-//           id: post.id,
-//           imageUrl: post.imageUrl,
-//           createdAt: new Date().toLocaleString().slice(0, -3),
-//           name: post.user.name,
-//           description: post.description,
-//           likes: post.likes,
-//           isLiked: false,
-//         };
-//       })
-//       // получили данные и рендер их в приложении
-//       return formatPosts;
-//     })
-// }
 export function getPosts({ token }) {
   return fetch(postsHost, {
     method: "GET",
