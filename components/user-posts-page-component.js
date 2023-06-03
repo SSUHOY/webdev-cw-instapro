@@ -1,18 +1,17 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { posts, goToPage, user } from "../index.js";
-import { addLike, delLike } from "../api.js";
-import { initLikeButtons, formatDateDistanceToNow } from "../helpers.js";
+import { posts, goToPage } from "../index.js";
+import { initLikeButtons } from "../helpers.js";
 
 
 
-export function renderPostsPageComponent({ appEl }) {
+export function renderUserPostsPageComponent({ appEl }) {
   // TODO: реализовать рендер постов из api
   console.log("Актуальный список постов:", posts);
 
-  const postsHtml = posts.map((post) => {
-    const likedUserNames = post.likes.map(obj => obj.name)
-    return `<li class="post">
+const postsHtml = posts.map((post) => {
+  const likedUserNames = post.likes.map(obj => obj.name)
+  return `<li class="post">
   <div class="post-header" data-user-id=${post.user.id}>
       <img src="${post.user.imageUrl}" class="post-header__user-image">
       <p class="post-header__user-name">${post.user.name}</p>
@@ -25,9 +24,8 @@ export function renderPostsPageComponent({ appEl }) {
       <img src="./assets/images/${post.isLiked ? 'like-active.svg' : 'like-not-active.svg'}">
     </button>
     <p class="post-likes-text">
-    <div class="form-error"></div>
-    Нравится: <strong>${likedUserNames.length ? likedUserNames[0] : 0} </strong>
-      ${likedUserNames.length > 1 ? `и <strong>еще ${likedUserNames.length - 1}</strong>`: ''}
+    Нравится: <strong>${likedUserNames.length ? likedUserNames[0] : ''} </strong>
+    ${likedUserNames.length > 1 ? `и <strong>еще ${likedUserNames.length - 1}</strong>` : ''}
     </p>
   </div>
   <p class="post-text">
@@ -35,10 +33,10 @@ export function renderPostsPageComponent({ appEl }) {
     ${post.description}
   </p>
   <p class="post-date">
-   Опубликовано: ${formatDateDistanceToNow(new Date(post.createdAt))}
+  Опубликовано: ${formatDateDistanceToNow(new Date(post.createdAt))}
   </p>
 </li>`
-  }).join('')
+}).join('')
 
   /**
    * TODO: чтобы отформатировать дату создания поста в виде "19 минут назад"
@@ -67,4 +65,3 @@ export function renderPostsPageComponent({ appEl }) {
   }
   initLikeButtons(posts, user, addLike, delLike)
 }
-
